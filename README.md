@@ -1,8 +1,6 @@
 # Match3Animals
-Match 3 Animals Prototype - Current State Picture And Video
+Match 3 Animals Prototype with Video
 
+![animal match](https://user-images.githubusercontent.com/13463782/195466631-50173eef-4235-4a7a-bc37-6e8a85a826d8.png)
 
-![animals](https://user-images.githubusercontent.com/13463782/195260057-8b670e23-d59d-40a6-ae64-3bb65d60704a.png)
-
-
-https://youtu.be/3rHd3Eh-yH4
+https://youtu.be/89_VDR8zbX8
