@@ -12,13 +12,19 @@ public class Board : MonoBehaviour{
     public enum BoardState { Locked, Free }
     public BoardState boardState = BoardState.Free;
 
-    [Header("Board Game Objects")]
+    [Header("Board Game references")]
     [SerializeField] private Animal[] animals;
+    [SerializeField] private Animal bomb;
     [SerializeField] private GameObject tilePrefab;
     [SerializeField] private CameraSetup cameraSetup;
     public MatchFinder matchFinder;
 
     public Animal[,] animalsGrid;
+    public float bombChance = .02f;
+    public float bonusMulti;
+    public float bonusValue = .5f;
+
+    [SerializeField] private ScoreManager scoreManager;
 
     private void Start() {
         SetupBoard();
@@ -56,11 +62,15 @@ public class Board : MonoBehaviour{
 
 
     private void SpawnAnimal(Animal animal,Vector2 coords) {
+        if(Random.Range(0f, 1f) <= bombChance) {
+            animal = bomb;
+        }
+
         Animal newAnimal = Instantiate(animal, coords+new Vector2(0f,height*2), Quaternion.identity, transform);
         newAnimal.name = "Animal (" + coords.x + "," + coords.y + ")";
         animalsGrid[(int)coords.x, (int)coords.y] = newAnimal;
         newAnimal.SetupAnimal(coords,this);
-        newAnimal.AnimateAnimalFalling();
+        newAnimal.AnimateAnimalToGridIndex();
     }
 
     private bool DoesStartingMatchExist(Animal randomAnimal, Vector2 coords) {
@@ -90,7 +100,7 @@ public class Board : MonoBehaviour{
         boardState = BoardState.Free;
     }
 
-    public bool IsLocked() {
+    public bool IsBoardLocked() {
         return boardState == BoardState.Locked;
     }
 
@@ -99,7 +109,8 @@ public class Board : MonoBehaviour{
     #region Destroy Matches
 
     public void DestroyAllMatches() {
-        if (matchFinder.currentMatches.Count == 0) { UnlockBoard(); return; }
+        bonusMulti++;
+        if (matchFinder.currentMatches.Count == 0) { bonusMulti = 0f; UnlockBoard(); return; }
         for (int i = 0; i < matchFinder.currentMatches.Count; i++) {
             DestroyMatchAtIndex(matchFinder.currentMatches[i].gridIndex);
         }
@@ -108,8 +119,11 @@ public class Board : MonoBehaviour{
     private void DestroyMatchAtIndex(Vector2 gridIndex) {
         if (animalsGrid[(int)gridIndex.x, (int)gridIndex.y] != null) {
             if (animalsGrid[(int)gridIndex.x, (int)gridIndex.y].isMatched) {
+                Instantiate(animalsGrid[(int)gridIndex.x, (int)gridIndex.y].burstEffect,new Vector2(gridIndex.x, gridIndex.y), Quaternion.identity);
+                scoreManager.AddToScore(animalsGrid[(int)gridIndex.x, (int)gridIndex.y], bonusMulti*bonusValue);
                 Destroy(animalsGrid[(int)gridIndex.x, (int)gridIndex.y].gameObject);
                 animalsGrid[(int)gridIndex.x, (int)gridIndex.y] = null;
+
             }
         }
     }
@@ -129,7 +143,7 @@ public class Board : MonoBehaviour{
                     animalsGrid[x, y].gridIndex.y -=nullCounter;
                     animalsGrid[x, y-nullCounter] = animalsGrid[x, y];
                     animalsGrid[x, y] = null;
-                    animalsGrid[x, y - nullCounter].AnimateAnimalFalling();
+                    animalsGrid[x, y - nullCounter].AnimateAnimalToGridIndex();
                 }
             }
             nullCounter = 0;
@@ -156,6 +170,40 @@ public class Board : MonoBehaviour{
         DestroyAllMatches();
     }
 
+    #endregion
+
+    #region Shuffle Board
+
+    public void ShuffleBoard() {
+        if (!IsBoardLocked()) {
+            LockBoard();
+            List<Animal> animalsOnBoard = new List<Animal>();
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    animalsOnBoard.Add(animalsGrid[x, y]);
+                    animalsGrid[x, y] = null;
+                }
+            }
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    Animal randomAnimal = animalsOnBoard[Random.Range(0, animalsOnBoard.Count)];
+
+                    int iterationCount = 0;
+                    while (DoesStartingMatchExist(randomAnimal, new Vector2(x,y)) && iterationCount < 100 && animalsOnBoard.Count > 1) {
+                        randomAnimal = animalsOnBoard[Random.Range(0, animalsOnBoard.Count)];
+                        iterationCount++;
+                    }
+
+                    randomAnimal.SetupAnimal(new Vector2(x, y), this);
+                    animalsGrid[x, y] = randomAnimal;
+                    animalsOnBoard.Remove(randomAnimal);
+                    randomAnimal.AnimateAnimalToGridIndex();
+                }
+            }
+            matchFinder.FindAllMatches();
+            DestroyAllMatches();
+        }
+    }
     #endregion
 
 }

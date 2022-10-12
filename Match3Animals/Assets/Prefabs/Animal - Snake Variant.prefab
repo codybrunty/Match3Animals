@@ -23,6 +23,10 @@ PrefabInstance:
       propertyPath: animalType
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6798018231546981225, guid: efc0cb66f9eb77a47a9b786b939c6e24, type: 3}
+      propertyPath: burstEffect
+      value: 
+      objectReference: {fileID: 487955914014236576, guid: 7cf12f2510d87e747aa5623a7b6f128c, type: 3}
     - target: {fileID: 6798018231546981230, guid: efc0cb66f9eb77a47a9b786b939c6e24, type: 3}
       propertyPath: m_Sprite
       value: 

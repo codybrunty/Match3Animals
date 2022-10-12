@@ -47,6 +47,61 @@ public class MatchFinder : MonoBehaviour{
                 }
             }
         }
+        CheckForBombs();
+    }
+
+    public void CheckForBombs() {
+        for (int i = 0; i < currentMatches.Count; i++) {
+            Animal match = currentMatches[i];
+            int x = (int)match.gridIndex.x;
+            int y = (int)match.gridIndex.y;
+
+            if (x > 0) {
+                if (board.animalsGrid[x - 1, y] != null) {
+                    if (board.animalsGrid[x - 1, y].animalType == Animal.AnimalType.Bomb) {
+                        MarkBombArea(new Vector2(x - 1, y), board.animalsGrid[x - 1, y]);
+                    }
+                }
+            }
+
+            if (x < board.width - 1) {
+                if (board.animalsGrid[x + 1, y] != null) {
+                    if (board.animalsGrid[x + 1, y].animalType == Animal.AnimalType.Bomb) {
+                        MarkBombArea(new Vector2(x + 1, y), board.animalsGrid[x + 1, y]);
+                    }
+                }
+            }
+
+
+            if (y > 0) {
+                if (board.animalsGrid[x, y - 1] != null) {
+                    if (board.animalsGrid[x, y - 1].animalType == Animal.AnimalType.Bomb) {
+                        MarkBombArea(new Vector2(x, y - 1), board.animalsGrid[x, y - 1]);
+                    }
+                }
+            }
+
+            if (y < board.height - 1) {
+                if (board.animalsGrid[x, y + 1] != null) {
+                    if (board.animalsGrid[x, y + 1].animalType == Animal.AnimalType.Bomb) {
+                        MarkBombArea(new Vector2(x, y + 1), board.animalsGrid[x, y + 1]);
+                    }
+                }
+            }
+        }
+    }
+
+    private void MarkBombArea(Vector2 gridIndex, Animal bomb) {
+        for (int x = (int)gridIndex.x-bomb.blastRadius; x <= (int)gridIndex.x + bomb.blastRadius; x++) {
+            for (int y = (int)gridIndex.y - bomb.blastRadius; y <= (int)gridIndex.y + bomb.blastRadius; y++) {
+                if (x >= 0 && x < board.width && y >= 0 && y < board.height ) {
+                    if (board.animalsGrid[x, y] != null) {
+                        board.animalsGrid[x, y].isMatched = true;
+                        if (!currentMatches.Contains(board.animalsGrid[x, y])) { currentMatches.Add(board.animalsGrid[x, y]); }
+                    }
+                }
+            }
+        }
     }
 
 }

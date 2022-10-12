@@ -5,7 +5,7 @@ using DG.Tweening;
 
 public class Animal : MonoBehaviour{
 
-    public enum AnimalType { Narwhal, Snake, Parrot, Giraffe, Chicken }
+    public enum AnimalType { Narwhal, Snake, Parrot, Giraffe, Chicken, Bomb }
     public AnimalType animalType;
 
     public Vector2 gridIndex;
@@ -21,8 +21,13 @@ public class Animal : MonoBehaviour{
     public bool isMatched = false;
     public Vector2 oldGridIndex;
 
+    public GameObject burstEffect;
+
+    public int blastRadius = 1;
+    public int scoreValue = 10;
+
     private void OnMouseDown() {
-        if (!board.IsLocked()) {
+        if (!board.IsBoardLocked()) {
             pressed = true;
             startTouch = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
@@ -83,7 +88,7 @@ public class Animal : MonoBehaviour{
             } });
     }
 
-    public void AnimateAnimalFalling() {
+    public void AnimateAnimalToGridIndex() {
         transform.DOLocalMove(gridIndex, board.animalFallTime).SetEase(Ease.OutCubic);
     }
 

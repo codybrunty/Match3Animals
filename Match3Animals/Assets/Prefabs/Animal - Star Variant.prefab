@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &3591381573801021165
+--- !u!1001 &7978083817433483256
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -9,28 +9,28 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3064190566923252631, guid: efc0cb66f9eb77a47a9b786b939c6e24, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 0.7828571
+      value: 0.94
       objectReference: {fileID: 0}
     - target: {fileID: 3064190566923252631, guid: efc0cb66f9eb77a47a9b786b939c6e24, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 0.7771429
+      value: 0.895
       objectReference: {fileID: 0}
     - target: {fileID: 6798018231546981224, guid: efc0cb66f9eb77a47a9b786b939c6e24, type: 3}
       propertyPath: m_Name
-      value: Animal - Parrot Variant
+      value: Animal - Star Variant
       objectReference: {fileID: 0}
     - target: {fileID: 6798018231546981225, guid: efc0cb66f9eb77a47a9b786b939c6e24, type: 3}
       propertyPath: animalType
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6798018231546981225, guid: efc0cb66f9eb77a47a9b786b939c6e24, type: 3}
       propertyPath: burstEffect
       value: 
-      objectReference: {fileID: 6880650274562777931, guid: 938fabccf364ebe4591f24eed790b125, type: 3}
+      objectReference: {fileID: 6324679582592922663, guid: f7fcfcbd07f2fd84cad31cd956f88653, type: 3}
     - target: {fileID: 6798018231546981230, guid: efc0cb66f9eb77a47a9b786b939c6e24, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 3e7defd7adf909d49b1e12cac7deea78, type: 3}
+      objectReference: {fileID: 21300000, guid: f591b0aaaf9f9854eba2cf5b9b44b818, type: 3}
     - target: {fileID: 6798018231546981231, guid: efc0cb66f9eb77a47a9b786b939c6e24, type: 3}
       propertyPath: m_RootOrder
       value: 0
