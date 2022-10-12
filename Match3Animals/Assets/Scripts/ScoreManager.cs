@@ -19,7 +19,7 @@ public class ScoreManager : MonoBehaviour{
         score += (int)(animal.scoreValue * bonusMulti);
         if (addUpCo != null) { StopCoroutine(addUpCo); }
         addUpCo = StartCoroutine(AnimateScore());
-        Debug.Log("x"+bonusMulti.ToString()+" "+(int)(animal.scoreValue * bonusMulti));
+        //Debug.Log("x"+bonusMulti.ToString()+" "+(int)(animal.scoreValue * bonusMulti));
     }
 
     public void UpdateScoreDisplay() {
